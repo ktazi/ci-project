@@ -1,0 +1,41 @@
+
+version: "3"  
+services:  
+  prometheus:
+      image: prom/prometheus:v2.37.6
+      ports:
+        - 9090:9090
+      volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+      networks:
+        - monitoring
+  client:
+      container_name: vue_client
+      build: ./client/.
+      ports :
+        - "8080:8080"
+      volumes:
+        - /usr/src/app/my-app/node_modules
+      networks:
+        - monitoring
+  node-exporter:    
+        image: prom/node-exporter:latest    
+        container_name: node-exporter    
+        restart: unless-stopped    
+        volumes:      
+          - /proc:/host/proc:ro      
+          - /sys:/host/sys:ro      
+          - /:/rootfs:ro    
+        command:      
+          - '--path.procfs=/host/proc'
+          - '--path.rootfs=/rootfs'      
+          - '--path.sysfs=/host/sys'      
+        expose:      
+          - 9100    
+        ports:       
+          - 9100:9100     
+        networks:      
+          - monitoring
+networks:
+  monitoring:
+    driver: bridge
