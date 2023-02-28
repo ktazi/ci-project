@@ -11,11 +11,11 @@ pipeline {
             
             		}
 		}
-    stage('test') {
+    		stage('test') {
 			steps {
-        sh 'echo test'
-      }
-    }
+        			sh 'echo test'
+      			}
+    		}
 		stage('Deploying and merging staging branch'){
 			steps {
 				echo 'Merging to the git master'
