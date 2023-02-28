@@ -11,11 +11,28 @@ pipeline {
             
             		}
 		}
-    stage('test') {
+    		stage('Training the AI') {
 			steps {
-        sh 'echo test'
-      }
-    }
+        			sh '''
+				#!/usr/bin/env bash
+				source ~/opt/anaconda3/etc/profile.d/conda.sh
+				conda activate mlops
+				~/opt/anaconda3/envs/mlops/bin/python ./server/train_model.py
+				'''
+      			}
+    		}
+		stage('Building the docker image of the server') {
+			steps {
+        			sh 'docker image build ./server -t kenztaz/server-anime-app'
+				//sh 'docker push kenztaz/server-anime-app' //bugs
+      			}
+    		}
+		
+		stage('Building the client and the monitor app') {
+			steps {
+				sh 'docker-compose build'
+			}
+    		}
 		stage('Deploying and merging staging branch'){
 			steps {
 				echo 'Merging to the git master'
