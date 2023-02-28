@@ -24,8 +24,10 @@ pipeline {
 		stage('Building the docker image of the server') {
 			steps {
         			sh 'docker image build ./server -t kenztaz/server-anime-app'
+				sh 'docker push kenztaz/server-anime-app:latest'
       			}
     		}
+		
 		stage('Login to Docker Hub'){
 			steps {
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                		
