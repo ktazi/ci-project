@@ -21,12 +21,22 @@ pipeline {
 				'''
       			}
     		}
-		stage('Building the docker for the server') {
+		stage('Building the docker image of the server') {
 			steps {
-        			sh 'echo test'
+        			sh 'docker image build ./server -t kenztaz/server-anime-app'
       			}
     		}
-		
+		stage('Login to Docker Hub'){
+			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                		
+				echo 'Login Completed' 
+		    }
+		}
+		stage('Exporting to dockerhub the docker image') {
+			steps {
+				echo "test"
+			}
+    		}
 		stage('Deploying and merging staging branch'){
 			steps {
 				echo 'Merging to the git master'
