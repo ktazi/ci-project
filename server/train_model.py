@@ -7,7 +7,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
 import joblib
 
-anime = pd.read_csv("anime_preprocessed.csv")
+anime = pd.read_csv("./server/anime_preprocessed.csv")
 y=anime['Rating']
 anime=anime.drop('Rating',axis=1)
 X_train, X_test, y_train, y_test = train_test_split(anime.values, y, test_size=0.2)
