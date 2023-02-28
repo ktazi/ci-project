@@ -24,13 +24,13 @@ pipeline {
 		stage('Building the docker image of the server') {
 			steps {
         			sh 'docker image build ./server -t kenztaz/server-anime-app'
-				sh 'docker push kenztaz/server-anime-app'
+				//sh 'docker push kenztaz/server-anime-app' //bugs
       			}
     		}
 		
 		stage('Building the client and the monitor app') {
 			steps {
-				echo "test"
+				sh 'docker-compose build'
 			}
     		}
 		stage('Deploying and merging staging branch'){
