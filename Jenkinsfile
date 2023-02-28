@@ -11,11 +11,22 @@ pipeline {
             
             		}
 		}
-    		stage('test') {
+    		stage('Training the AI') {
+			steps {
+        			sh '''
+				#!/usr/bin/env bash
+				source ~/opt/anaconda3/etc/profile.d/conda.sh
+				conda activate mlops
+				~/opt/anaconda3/envs/mlops/bin/python ./server/train_model.py
+				'''
+      			}
+    		}
+		stage('Building the docker for the server') {
 			steps {
         			sh 'echo test'
       			}
     		}
+		
 		stage('Deploying and merging staging branch'){
 			steps {
 				echo 'Merging to the git master'
